@@ -30,12 +30,12 @@ class Block{
 class Blockchain{
     constructor(){
         this.chain = [this.createGenesisBlock()];
-        this.difficulty = 2;
+        this.difficulty = 5;
         this.pendingTransactions = [];
         this.miningReward = 100;
     }
     createGenesisBlock(){
-        return new Block("01/01/2017","Genesis","0");
+        return new Block(Date.parse("2017-01-01"),[],"0");
     }
     getLatestBlock(){
         return this.chain[this.chain.length - 1]
@@ -46,7 +46,7 @@ class Blockchain{
     //     this.chain.push(newBlock);
     // }
     minePendingTransactions(miningRewardAddress){
-        let block = new Block(Date.now(),this.pendingTransactions);
+        let block = new Block(Date.now(),this.pendingTransactions,this.getLatestBlock().hash);
         block.mineBlock(this.difficulty);
         console.log('block successfully mined');
         this.chain.push(block);
@@ -92,10 +92,11 @@ xCoin.createTransaction(new Transaction('address2','address1',50));
 console.log('Starting miner... \n');
 xCoin.minePendingTransactions('x-address');
 console.log('\n Balance of x is', xCoin.getBalanceOfAddress('x-address'));
-
+console.log(JSON.stringify(xCoin,null,4));
 console.log('Starting miner again... \n');
 xCoin.minePendingTransactions('x-address');
 console.log('\n Balance of x is', xCoin.getBalanceOfAddress('x-address'));
+console.log(JSON.stringify(xCoin,null,4));
 // console.log('Block 1 ...')
 // xCoin.addBlock(new Block(1,"17/10/2018",{amount: 4}));
 // console.log('Block 2 ...')
@@ -105,5 +106,5 @@ console.log('\n Balance of x is', xCoin.getBalanceOfAddress('x-address'));
 
 // xCoin.chain[1].data = {amount: 100};
 // xCoin.chain[1].hash = xCoin.chain[1].calculateHash();
-// console.log('is blockchain valid? '+ xCoin.isChainValid());
+console.log('is blockchain valid? '+ xCoin.isChainValid());
 // console.log(JSON.stringify(xCoin,null,4));
